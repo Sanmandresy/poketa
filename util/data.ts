@@ -1,0 +1,56 @@
+import { randomUUID } from "expo-crypto";
+
+type Mappable = Record<string, unknown>;
+
+export const objectMapper = <Source extends Mappable, Target extends Mappable>(
+	source: Source,
+	target: Target,
+	excludeProperties: (keyof (Source & Target))[] = [],
+	mapping?: () => Partial<Target>
+): Target => {
+	const destination = Object.create(Object.getPrototypeOf(target));
+
+	// Default copy operation for all properties present in both source and target
+	for (const key of Object.keys(source) as (keyof Source)[]) {
+		if (!excludeProperties?.includes(key as keyof (Source & Target))) {
+			destination[key] = source[key];
+		}
+	}
+
+	if (mapping) {
+		const mappingResult = mapping();
+		Object.assign(destination, mappingResult);
+	}
+
+	return destination;
+};
+
+export const paginate = (page?: number, pageSize?: number) => {
+	const actualPage = page ?? 1;
+	const actualPageSize = pageSize ?? 10;
+	const offset = actualPage * (actualPage - 1);
+	const nextOffset = actualPage * actualPageSize;
+	return { offset, nextOffset, actualPageSize };
+};
+
+export const hasKey = <T extends Mappable, K extends keyof T>(
+	obj: T,
+	key: K
+) => {
+	return key in obj;
+};
+
+export const hasValue = <T extends Mappable, K extends keyof T>(
+	obj: T,
+	key: K
+): obj is T & { [P in K]: NonNullable<T[P]> } => {
+	return hasKey(obj, key) && obj[key] !== null && obj[key] !== undefined;
+};
+
+export const randomUuid = () => {
+	return randomUUID().toLowerCase();
+};
+
+export const isBlank = (value: string | undefined) => {
+	return value?.trim().length === 0;
+};
