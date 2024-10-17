@@ -1,6 +1,6 @@
 import { Anchor, Paragraph, View, XStack } from "tamagui";
 
-export default function ModalScreen() {
+export default function Setup() {
 	return (
 		<View flex={1} alignItems="center" justifyContent="center">
 			<XStack gap="$2">

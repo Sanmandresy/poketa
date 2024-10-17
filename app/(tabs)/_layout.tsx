@@ -14,11 +14,6 @@ export default function TabLayout() {
 					backgroundColor: theme.background.val,
 					borderTopColor: theme.borderColor.val,
 				},
-				headerStyle: {
-					backgroundColor: theme.background.val,
-					borderBottomColor: theme.borderColor.val,
-				},
-				headerTintColor: theme.black10.val,
 			}}
 		>
 			{tabs.map((tab, index) => (
@@ -27,11 +22,11 @@ export default function TabLayout() {
 					key={`k${index}-${tab.label}`}
 					options={{
 						title: tab.title,
+						headerShown: false,
 						tabBarInactiveTintColor: theme.black10.val,
 						tabBarIcon: ({ color, size }) => (
 							<TabIcon color={color} icon={tab.icon} size={size} />
 						),
-						headerRight: () => tab.headerNode,
 					}}
 				/>
 			))}
