@@ -54,3 +54,8 @@ export const randomUuid = () => {
 export const isBlank = (value: string | undefined) => {
 	return value?.trim().length === 0;
 };
+
+export const isEmail = (email: string) => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};

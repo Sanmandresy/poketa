@@ -4,8 +4,8 @@ type MutationFunction<TData, TVariables> = (
 	variables: TVariables
 ) => Promise<TData>;
 
-interface UseSubmitResult<TData, TVariables> {
-	submit: (payload: TVariables) => Promise<TData>;
+interface UseSubmitResult<TVariables> {
+	submit: (payload: TVariables) => Promise<void>;
 	isLoading: boolean;
 	isError: boolean;
 	isSuccess: boolean;
@@ -13,20 +13,20 @@ interface UseSubmitResult<TData, TVariables> {
 	reset: () => void;
 }
 
-export const useSubmit = <TData, TVariables>(
-	mutationFn: MutationFunction<TData, TVariables>
-): UseSubmitResult<TData, TVariables> => {
-	const mutation: UseMutationResult<TData, Error, TVariables> = useMutation<
-		TData,
+export const useSubmit = <TVariables>(
+	callback: MutationFunction<void, TVariables>
+): UseSubmitResult<TVariables> => {
+	const mutation: UseMutationResult<void, Error, TVariables> = useMutation<
+		void,
 		Error,
 		TVariables
 	>({
-		mutationFn,
+		mutationFn: callback,
 	});
 
-	const submit = async (payload: TVariables): Promise<TData> => {
+	const submit = async (payload: TVariables): Promise<void> => {
 		try {
-			return await mutation.mutateAsync(payload);
+			await mutation.mutateAsync(payload);
 		} catch (error) {
 			console.error(error);
 			throw error;
