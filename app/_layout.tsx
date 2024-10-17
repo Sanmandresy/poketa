@@ -70,13 +70,13 @@ function RootLayoutNav() {
 				/>
 
 				<Stack.Screen
-					name="modal"
+					name="setup"
 					options={{
-						title: "Tamagui + Expo",
 						presentation: "modal",
 						animation: "slide_from_right",
 						gestureEnabled: true,
 						gestureDirection: "horizontal",
+						headerShown: false,
 						contentStyle: {
 							backgroundColor: theme.background.val,
 						},
