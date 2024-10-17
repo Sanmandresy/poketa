@@ -63,6 +63,6 @@
 		"@types/react": "~18.2.79",
 		"@types/react-native": "^0.73.0",
 		"drizzle-kit": "^0.26.2",
-		"typescript": "^5.3.3"
+		"typescript": "5.3.3"
 	}
 }
