@@ -85,8 +85,7 @@ function RootLayoutNav() {
 						options={{
 							presentation: "modal",
 							animation: "slide_from_right",
-							gestureEnabled: true,
-							gestureDirection: "horizontal",
+							gestureEnabled: false,
 							headerShown: false,
 							contentStyle: {
 								backgroundColor: theme.background.val,
