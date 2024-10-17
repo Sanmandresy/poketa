@@ -5,7 +5,6 @@ import { TabIcon } from "components";
 
 export default function TabLayout() {
 	const theme = useTheme();
-
 	return (
 		<Tabs
 			screenOptions={{

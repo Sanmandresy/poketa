@@ -6,9 +6,15 @@ import { hasKey, objectMapper, randomUuid } from "../../util";
 
 export const userRepository: Repository<User, unknown> = {
 	findOne: async (id) => {
-		const [entity] = await database.select().from(user).where(eq(user.id, id));
-		if (!entity) return null;
-		return objectMapper(entity, {} as User);
+		if (id) {
+			const [entity] = await database
+				.select()
+				.from(user)
+				.where(eq(user.id, id));
+			if (!entity) return null;
+			return objectMapper(entity, {} as User);
+		}
+		return null;
 	},
 	findFirst: async () => {
 		const [entity] = await database.select().from(user).limit(1);

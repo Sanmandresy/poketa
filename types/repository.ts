@@ -17,7 +17,7 @@ type Order<T> = {
 export type KOf<T> = keyof T;
 
 export interface Repository<T, K> {
-	findOne: (id: string) => Promise<T | null>;
+	findOne: (id: string | null) => Promise<T | null>;
 	findFirst?: () => Promise<T | null>;
 	findAll?: (
 		pagination: Pagination,
