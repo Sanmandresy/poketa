@@ -8,7 +8,7 @@ import {
 	YStack,
 } from "tamagui";
 import { LogIn } from "@tamagui/lucide-icons";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { User } from "types";
 import { useCache, useObject, useSubmit } from "hooks";
 import { userRepository } from "database";
@@ -27,13 +27,13 @@ export default function Setup() {
 	});
 	const { updateObjectProperty } = useObject(setUser);
 
-	const { submit, isLoading, isSuccess } = useSubmit<User[]>(async (data) => {
+	const { submit, isSuccess } = useSubmit<User[]>(async (data) => {
 		const result = await userRepository.saveOrUpdate?.(data);
 		// @ts-ignore
 		cache(currentUserId, result[0].id);
 	});
 
-	const handleSubmit = async () => {
+	const handleSubmit = useCallback(async () => {
 		if (!isBlank(user.username) && !isEmail(user.username)) {
 			await submit([user]);
 			if (isSuccess) {
@@ -41,7 +41,7 @@ export default function Setup() {
 			}
 		}
 		Alert.alert("Veuillez saisir un pseudo valide");
-	};
+	}, [isSuccess, router.navigate, submit, user]);
 
 	return (
 		<SafeArea>

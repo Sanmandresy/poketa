@@ -1,10 +1,19 @@
 import { Edit3 } from "@tamagui/lucide-icons";
 import { AppLayout, Header, ImagePreview, LinkButton } from "components";
-import { toProfileEdit } from "../../../constants";
+import { currentUserId, toProfileEdit } from "../../../constants";
 import { H5, useTheme } from "tamagui";
+import { useCache, useFetch } from "hooks";
+import type { User } from "types";
+import { userRepository } from "database";
 
 export default function Profile() {
 	const theme = useTheme();
+	const { getCached } = useCache();
+	const { data } = useFetch<User>(
+		// @ts-ignore
+		["profile", getCached(currentUserId)],
+		async () => await userRepository.findOne?.(getCached(currentUserId))
+	);
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">
@@ -22,8 +31,8 @@ export default function Profile() {
 				encoding="base64"
 				type="avatar"
 				size="$12"
-				source=""
-				label="Pseudo"
+				source={data?.avatar}
+				label={data?.username}
 			/>
 		</AppLayout>
 	);

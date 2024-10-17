@@ -19,7 +19,7 @@ export const useFetch = <T>(
 		[queryClient, queryKey]
 	);
 	return {
-		data: query.data,
+		data: query.data as T,
 		refetch,
 		invalidate,
 		isLoading: query.isLoading,
