@@ -4,7 +4,7 @@
 		"rootDir": ".",
 		"importHelpers": true,
 		"allowJs": true,
-    "checkJs": true,
+		"checkJs": true,
 		"allowSyntheticDefaultImports": true,
 		"downlevelIteration": true,
 		"esModuleInterop": true,
