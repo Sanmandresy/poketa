@@ -1,6 +1,13 @@
+import { asc, desc } from "drizzle-orm";
+import { SQLiteColumn, type SQLiteTable } from "drizzle-orm/sqlite-core";
 import { randomUUID } from "expo-crypto";
+import type { OrderDirection } from "types";
 
 type Mappable = Record<string, unknown>;
+
+type ColumnGetter<T extends SQLiteTable> = {
+	[K in keyof T]: T[K] extends SQLiteColumn ? K : never;
+}[keyof T];
 
 export const objectMapper = <Source extends Mappable, Target extends Mappable>(
 	source: Source,
@@ -58,4 +65,31 @@ export const isBlank = (value: string | undefined) => {
 export const isEmail = (email: string) => {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	return emailRegex.test(email);
+};
+
+export function getTableColumn<T extends SQLiteTable>(
+	table: T,
+	key: ColumnGetter<T>
+): SQLiteColumn | undefined {
+	if (key in table) {
+		const column = table[key];
+		if (column instanceof SQLiteColumn) {
+			return column;
+		}
+	}
+	return undefined;
+}
+
+export const getOrderDirection = (
+	column: SQLiteColumn,
+	direction: OrderDirection
+) => {
+	switch (direction) {
+		case "ASC":
+			return asc(column);
+		case "DESC":
+			return desc(column);
+		default:
+			return asc(column);
+	}
 };
