@@ -1,5 +1,5 @@
 import { Camera, Check, GalleryHorizontal } from "@tamagui/lucide-icons";
-import { ActionButton, AppLayout, Header, ImagePreview } from "components";
+import { AppLayout, Header, ImagePreview } from "components";
 import { currentUserId, toProfile } from "../../../constants";
 import { useCache, useDevice, useFetch, useObject, useSubmit } from "hooks";
 import { useCallback, useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import type { User } from "types";
 import { userRepository } from "database";
 import { isBlank, isEmail } from "../../../util";
 import { useRouter } from "expo-router";
-import { Alert } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 
 export default function ProfileEdit() {
 	const theme = useTheme();
@@ -45,16 +45,25 @@ export default function ProfileEdit() {
 	});
 
 	const handleSubmit = useCallback(async () => {
-		if (!isBlank(profile.username) && !isEmail(profile.username)) {
-			await submit([profile]);
-			if (isSuccess) {
-				invalidate();
-				refetch();
-				router.navigate(toProfile);
-			}
+		if (isBlank(profile.username) || isEmail(profile.username)) {
+			Alert.alert("Veuillez saisir un pseudo valide");
+			return;
 		}
-		Alert.alert("Veuillez saisir un pseudo valide");
-	}, [isSuccess, router.navigate, submit, profile, invalidate, refetch]);
+		try {
+			await submit([profile]);
+			await invalidate();
+			await refetch();
+		} catch (error) {
+			console.error("Error in handleSubmit:", error);
+			Alert.alert("Une erreur s'est produite");
+		}
+	}, [profile, submit, invalidate, refetch]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			router.navigate(toProfile);
+		}
+	}, [isSuccess, router]);
 
 	const handleImagePick = useCallback(
 		async (source: "camera" | "gallery") => {
@@ -73,9 +82,9 @@ export default function ProfileEdit() {
 				<H5 color={theme.black10.val} size={"$8"}>
 					Profil
 				</H5>
-				<ActionButton onPress={handleSubmit}>
+				<TouchableOpacity onPress={handleSubmit}>
 					<Check color={theme.black10.val} />
-				</ActionButton>
+				</TouchableOpacity>
 			</Header>
 			<ImagePreview
 				width="100%"
@@ -86,12 +95,12 @@ export default function ProfileEdit() {
 				source={profile.avatar}
 			/>
 			<XStack display="flex" jc="center" gap="$5" marginVertical="$2">
-				<ActionButton onPress={() => handleImagePick("camera")}>
+				<TouchableOpacity onPress={() => handleImagePick("camera")}>
 					<Camera />
-				</ActionButton>
-				<ActionButton onPress={() => handleImagePick("gallery")}>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => handleImagePick("gallery")}>
 					<GalleryHorizontal />
-				</ActionButton>
+				</TouchableOpacity>
 			</XStack>
 			<YStack paddingHorizontal="$3" gap="$4" marginVertical="$4">
 				<H6 size={"$6"} textTransform="capitalize">
