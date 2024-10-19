@@ -77,8 +77,6 @@ export default function Transactions() {
 		} else {
 			next();
 		}
-		await refetch();
-		await invalidate();
 	};
 
 	return (
