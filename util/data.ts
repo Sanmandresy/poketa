@@ -97,3 +97,10 @@ export const getOrderDirection = (
 			return asc(column);
 	}
 };
+
+export const formatNumber = (num: number): string => {
+	return num.toLocaleString("fr-FR", {
+		useGrouping: true,
+		maximumFractionDigits: 2,
+	});
+};

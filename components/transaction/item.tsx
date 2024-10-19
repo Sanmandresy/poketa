@@ -19,6 +19,7 @@ import {
 	Wallet,
 	Waypoints,
 } from "@tamagui/lucide-icons";
+import { formatNumber } from "../../util";
 
 type TransactionProps = ViewProps & Transaction;
 
@@ -91,7 +92,7 @@ export const TransactionItem = ({
 				<SizableText textTransform="capitalize" size="$6">
 					{title}
 				</SizableText>
-				<Paragraph size={"$3"}>{amount} Ariary</Paragraph>
+				<Paragraph size={"$3"}>{formatNumber(amount)} Ariary</Paragraph>
 			</YStack>
 		</Card>
 	);
