@@ -99,8 +99,19 @@ export const getOrderDirection = (
 };
 
 export const formatNumber = (num: number): string => {
-	return num.toLocaleString("fr-FR", {
+	// Check if the number is finite to avoid NaN or Infinity
+	if (!Number.isFinite(num)) return String(num);
+
+	// Handle negative numbers separately
+	const sign = Math.sign(num);
+	const absNum = Math.abs(num);
+
+	// Format the absolute value
+	const formattedAbsNum = absNum.toLocaleString("fr-FR", {
 		useGrouping: true,
 		maximumFractionDigits: 2,
 	});
+
+	// Add parentheses for negative numbers
+	return sign === -1 ? `(${formattedAbsNum})` : formattedAbsNum;
 };

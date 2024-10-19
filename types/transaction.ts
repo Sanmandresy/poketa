@@ -52,3 +52,26 @@ export const getType = (type: TransactionEntity["type"]) => {
 			return TransactionType.EXPENSE;
 	}
 };
+
+export const translateType = (type: TransactionType) => {
+	switch (type) {
+		case TransactionType.EXPENSE:
+			return "Dépense";
+		case TransactionType.DONATION:
+			return "Don";
+		case TransactionType.INCOME:
+			return "Revenu";
+		case TransactionType.INVESTMENT:
+			return "Investissement";
+		case TransactionType.LOAN:
+			return "Prêt";
+		case TransactionType.REPAYMENT:
+			return "Remboursement";
+		case TransactionType.SAVINGS:
+			return "Epargne";
+		case TransactionType.TRANSFER:
+			return "Virement";
+		default:
+			return "Dépense";
+	}
+};

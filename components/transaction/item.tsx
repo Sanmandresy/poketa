@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
 	styled,
 	View,
@@ -7,6 +7,7 @@ import {
 	Paragraph,
 	useTheme,
 	SizableText,
+	XStack,
 } from "tamagui";
 import { TransactionType, type Transaction } from "types";
 import {
@@ -18,8 +19,15 @@ import {
 	SquareArrowRight,
 	Wallet,
 	Waypoints,
+	Eye,
+	Trash,
 } from "@tamagui/lucide-icons";
 import { formatNumber } from "../../util";
+import { useRouter } from "expo-router";
+import { Alert, TouchableOpacity } from "react-native";
+import { useSubmit } from "hooks";
+import { transactionRepository } from "database";
+import { toShowTransaction } from "../../constants";
 
 type TransactionProps = ViewProps & Transaction;
 
@@ -28,7 +36,7 @@ const Card = styled(View, {
 	width: "100%",
 	flexDirection: "row",
 	alignItems: "center",
-	paddingHorizontal: 5,
+	paddingHorizontal: 7,
 });
 
 const Icon = styled(View, {
@@ -42,9 +50,17 @@ export const TransactionItem = ({
 	type,
 	title,
 	amount,
+	id,
 	...rest
 }: TransactionProps) => {
 	const theme = useTheme();
+	const size = 20;
+	const router = useRouter();
+
+	const { isSuccess, submit, invalidate } = useSubmit<string>(async (id) => {
+		await transactionRepository.delete?.(id);
+	});
+
 	const renderIcon = useCallback(() => {
 		switch (type) {
 			case TransactionType.INCOME:
@@ -67,6 +83,25 @@ export const TransactionItem = ({
 				return <SquareArrowLeft color={"white"} />;
 		}
 	}, [type]);
+
+	const redirect = useCallback(() => {
+		router.navigate(`${toShowTransaction}${id}`);
+	}, [id, router]);
+
+	const remove = useCallback(async () => {
+		try {
+			await submit(id);
+		} catch (error) {
+			console.error("Error in remove:", error);
+			Alert.alert("Une erreur s'est produite");
+		}
+	}, [id, submit]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			invalidate(["transactions"]);
+		}
+	}, [isSuccess, invalidate]);
 
 	return (
 		<Card
@@ -94,6 +129,14 @@ export const TransactionItem = ({
 				</SizableText>
 				<Paragraph size={"$3"}>{formatNumber(amount)} Ariary</Paragraph>
 			</YStack>
+			<XStack flexGrow={1} ai="center" gap="$3" jc="flex-end">
+				<TouchableOpacity onPress={redirect}>
+					<Eye size={size} color={theme.color.val} />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={remove}>
+					<Trash size={size} color={theme.color.val} />
+				</TouchableOpacity>
+			</XStack>
 		</Card>
 	);
 };
