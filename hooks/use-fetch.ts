@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 export const useFetch = <T>(
-	queryKey: string[],
+	queryKey: (string | number | undefined)[],
 	callback: () => Promise<T | null | unknown>
 ) => {
 	const queryClient = useQueryClient();

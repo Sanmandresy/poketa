@@ -1,4 +1,9 @@
-import { useMutation, type UseMutationResult } from "@tanstack/react-query";
+import {
+	useMutation,
+	useQueryClient,
+	type UseMutationResult,
+} from "@tanstack/react-query";
+import { useCallback } from "react";
 
 type MutationFunction<TData, TVariables> = (
 	variables: TVariables
@@ -11,11 +16,13 @@ interface UseSubmitResult<TVariables> {
 	isSuccess: boolean;
 	error: Error | null;
 	reset: () => void;
+	invalidate: (queryKey: string[]) => void;
 }
 
 export const useSubmit = <TVariables>(
 	callback: MutationFunction<void, TVariables>
 ): UseSubmitResult<TVariables> => {
+	const queryClient = useQueryClient();
 	const mutation: UseMutationResult<void, Error, TVariables> = useMutation<
 		void,
 		Error,
@@ -23,6 +30,14 @@ export const useSubmit = <TVariables>(
 	>({
 		mutationFn: callback,
 	});
+
+	const invalidate = useCallback(
+		(queryKey) =>
+			queryClient.invalidateQueries({
+				queryKey,
+			}),
+		[queryClient]
+	);
 
 	const submit = async (payload: TVariables): Promise<void> => {
 		try {
@@ -35,6 +50,7 @@ export const useSubmit = <TVariables>(
 
 	return {
 		submit,
+		invalidate,
 		isLoading: mutation.isPending,
 		isError: mutation.isError,
 		isSuccess: mutation.isSuccess,

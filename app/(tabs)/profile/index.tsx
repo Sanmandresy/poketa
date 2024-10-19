@@ -17,11 +17,11 @@ export default function Profile() {
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">
-				<H5 color={theme.black10.val} size={"$8"}>
+				<H5 color={theme.color.val} size={"$8"}>
 					Profil
 				</H5>
 				<LinkButton
-					content={<Edit3 color={theme.black10.val} />}
+					content={<Edit3 color={theme.color.val} />}
 					href={toProfileEdit}
 				/>
 			</Header>

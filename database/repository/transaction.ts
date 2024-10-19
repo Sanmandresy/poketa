@@ -9,11 +9,12 @@ import {
 	paginate,
 	randomUuid,
 } from "../../util";
-import type {
-	Page,
-	Repository,
-	Transaction,
-	TransactionFilter,
+import {
+	getType,
+	type Page,
+	type Repository,
+	type Transaction,
+	type TransactionFilter,
 } from "../../types";
 
 export const transactionRepository: Repository<Transaction, TransactionFilter> =
@@ -25,34 +26,36 @@ export const transactionRepository: Repository<Transaction, TransactionFilter> =
 					.from(transaction)
 					.where(eq(transaction.id, id));
 				if (!entity) return null;
-				return objectMapper(entity, {} as Transaction);
+				return objectMapper(entity, {} as Transaction, undefined, () => ({
+					type: getType(entity.type),
+				}));
 			}
 			return null;
 		},
 		findAll: async (pagination, filter, order) => {
 			const { nextOffset, offset, actualPageSize } = paginate(
-				pagination.page,
-				pagination.pageSize
+				pagination?.page,
+				pagination?.pageSize
 			);
 			const query = database.select().from(transaction);
 
-			if (filter.title !== undefined) {
+			if (filter?.title !== undefined) {
 				query.where(ilike(transaction.title, `%${filter.title}%`));
 			}
 
-			if (filter.type !== undefined) {
+			if (filter?.type !== undefined) {
 				query.where(eq(transaction.type, filter.type));
 			}
 
 			// @ts-ignore
-			if (filter.amounts !== undefined || filter.amounts?.length === 2) {
+			if (filter?.amounts !== undefined || filter?.amounts?.length === 2) {
 				query.where(
-					between(transaction.amount, filter.amounts[0], filter.amounts[1])
+					between(transaction.amount, filter?.amounts[0], filter.amounts[1])
 				);
 			}
 
 			// @ts-ignore
-			if (filter.dateRange !== undefined || filter.dateRange?.length === 2) {
+			if (filter?.dateRange !== undefined || filter?.dateRange?.length === 2) {
 				query.where(
 					between(
 						transaction.issued_on,
@@ -62,7 +65,7 @@ export const transactionRepository: Repository<Transaction, TransactionFilter> =
 				);
 			}
 
-			if (order.field !== undefined && order.value !== undefined) {
+			if (order?.field !== undefined && order?.value !== undefined) {
 				query.orderBy(
 					getOrderDirection(
 						// @ts-ignore
@@ -76,7 +79,11 @@ export const transactionRepository: Repository<Transaction, TransactionFilter> =
 			const nextPage = await query.offset(nextOffset).limit(1);
 
 			return {
-				data: actualPage.map((row) => objectMapper(row, {} as Transaction)),
+				data: actualPage.map((row) =>
+					objectMapper(row, {} as Transaction, undefined, () => ({
+						type: getType(row.type),
+					}))
+				),
 				is_last_page: nextPage.length === 0,
 			} satisfies Page<Transaction>;
 		},

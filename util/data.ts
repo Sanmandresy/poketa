@@ -62,6 +62,10 @@ export const isBlank = (value: string | undefined) => {
 	return value?.trim().length === 0;
 };
 
+export const toUndefined = (value: string | undefined) => {
+	return isBlank(value) ? undefined : value;
+};
+
 export const isEmail = (email: string) => {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	return emailRegex.test(email);

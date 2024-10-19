@@ -22,7 +22,7 @@ export default function TabLayout() {
 					options={{
 						title: tab.title,
 						headerShown: false,
-						tabBarInactiveTintColor: theme.black10.val,
+						tabBarInactiveTintColor: theme.color.val,
 						tabBarIcon: ({ color, size }) => (
 							<TabIcon color={color} icon={tab.icon} size={size} />
 						),

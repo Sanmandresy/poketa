@@ -79,11 +79,11 @@ export default function ProfileEdit() {
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">
-				<H5 color={theme.black10.val} size={"$8"}>
+				<H5 color={theme.color.val} size={"$8"}>
 					Profil
 				</H5>
 				<TouchableOpacity onPress={handleSubmit}>
-					<Check color={theme.black10.val} />
+					<Check color={theme.color.val} />
 				</TouchableOpacity>
 			</Header>
 			<ImagePreview

@@ -5,7 +5,7 @@ type Pagination = {
 	pageSize?: number;
 };
 
-type Filter<T> = {
+export type Filter<T> = {
 	[K in keyof T]?: T[K];
 };
 
@@ -20,9 +20,9 @@ export interface Repository<T, K> {
 	findOne: (id: string | null) => Promise<T | null>;
 	findFirst?: () => Promise<T | null>;
 	findAll?: (
-		pagination: Pagination,
-		filter: Filter<T & K>,
-		order: Order<T>
+		pagination?: Pagination,
+		filter?: Filter<T & K>,
+		order?: Order<T>
 	) => Promise<Page<T>>;
 	saveOrUpdate?: (payload: T[]) => Promise<T[]>;
 	delete?: (id: string) => Promise<T>;

@@ -16,8 +16,8 @@ export type Transaction = {
 	title: string;
 	amount: number;
 	type: TransactionType;
-	issued_on: string;
-	updated_on: string;
+	issued_on?: string;
+	updated_on?: string;
 	description: string;
 };
 
@@ -28,4 +28,27 @@ export type KTransaction = keyof Transaction;
 export type TransactionFilter = {
 	amounts?: number[];
 	dateRange?: string[];
+};
+
+export const getType = (type: TransactionEntity["type"]) => {
+	switch (type) {
+		case "EXPENSE":
+			return TransactionType.EXPENSE;
+		case "DONATION":
+			return TransactionType.DONATION;
+		case "INCOME":
+			return TransactionType.INCOME;
+		case "INVESTMENT":
+			return TransactionType.INVESTMENT;
+		case "LOAN":
+			return TransactionType.LOAN;
+		case "REPAYMENT":
+			return TransactionType.REPAYMENT;
+		case "SAVINGS":
+			return TransactionType.SAVINGS;
+		case "TRANSFER":
+			return TransactionType.TRANSFER;
+		default:
+			return TransactionType.EXPENSE;
+	}
 };

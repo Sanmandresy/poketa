@@ -1,4 +1,4 @@
-import React, { type ReactElement } from "react";
+import { type ReactElement, cloneElement } from "react";
 
 type TabProps = {
 	icon: ReactElement;
@@ -7,5 +7,5 @@ type TabProps = {
 };
 
 export const TabIcon = ({ icon, color, size }: TabProps) => {
-	return React.cloneElement(icon, { color, size });
+	return cloneElement(icon, { color, size });
 };
