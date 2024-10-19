@@ -4,7 +4,6 @@ import {
 	FilterPanel,
 	Header,
 	LinkButton,
-	TransactionItem,
 	TransactionList,
 } from "components";
 import { toAddTransaction, transactionTypes } from "../../../constants";
@@ -17,10 +16,9 @@ import {
 	SizableText,
 	useTheme,
 	XStack,
-	YGroup,
 	YStack,
 } from "tamagui";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import type {
 	Filter,
@@ -32,7 +30,7 @@ import type {
 import { useFetch, useObject, usePagination, usePanel } from "hooks";
 import { transactionRepository } from "database";
 import { toUndefined } from "../../../util";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 
 const paginationStyle = {
 	display: "flex",
@@ -46,28 +44,32 @@ export default function Transactions() {
 	const theme = useTheme();
 	const { open, togglePanel } = usePanel();
 	const { next, previous, page, pageSize } = usePagination();
-	const [filter, setFilter] = useState<Filter<Transaction & TransactionFilter>>(
-		{
-			title: undefined,
-			type: undefined,
-		}
-	);
+	const [filter, setFilter] = useState<Filter<Transaction>>({
+		title: undefined,
+		type: undefined,
+	});
 	const { data, refetch, invalidate, isLoading } = useFetch<Page<Transaction>>(
-		["transactions", page, pageSize, filter.title],
-		async () =>
-			await transactionRepository.findAll?.(
+		["transactions", page, pageSize, filter.title, filter.type],
+		async () => {
+			const result = await transactionRepository.findAll?.(
 				{ page, pageSize },
 				{ title: toUndefined(filter.title), type: filter.type }
-			)
+			);
+			return result;
+		}
 	);
-	const { updateObjectProperty } =
-		useObject<Filter<Transaction & TransactionFilter>>(setFilter);
+	const { updateObjectProperty } = useObject<Filter<Transaction>>(setFilter);
 
-	const handleFilter = useCallback(async () => {
-		await refetch();
-		await invalidate();
+	const handleFilter = async () => {
 		togglePanel();
-	}, [invalidate, refetch, togglePanel]);
+		try {
+			await refetch();
+			await invalidate();
+		} catch (error) {
+			console.error("Error in handleFilter:", error);
+			Alert.alert("Une erreur s'est produite");
+		}
+	};
 
 	const handlePagination = async (type: "previous" | "next") => {
 		if (type === "previous") {
@@ -138,7 +140,11 @@ export default function Transactions() {
 			</FilterPanel>
 
 			<ScrollView flexGrow={1} h="100%">
-				<TransactionList data={data?.data} isLoading={isLoading} />
+				<TransactionList
+					data={data?.data}
+					isEmpty={data?.data.length === 0}
+					isLoading={isLoading}
+				/>
 				<XStack jc="flex-end" gap="$5" px="$3" ai="center" pt="$5" pb="$11">
 					<TouchableOpacity
 						onPress={() => handlePagination("previous")}

@@ -20,8 +20,8 @@ export interface Repository<T, K> {
 	findOne: (id: string | null) => Promise<T | null>;
 	findFirst?: () => Promise<T | null>;
 	findAll?: (
-		pagination?: Pagination,
-		filter?: Filter<T & K>,
+		pagination: Pagination,
+		filter: Filter<T & K>,
 		order?: Order<T>
 	) => Promise<Page<T>>;
 	saveOrUpdate?: (payload: T[]) => Promise<T[]>;

@@ -81,7 +81,7 @@ export const TransactionItem = ({
 			animation="tooltip"
 			enterStyle={{
 				opacity: 0,
-				scale: 0.5
+				scale: 0.5,
 			}}
 		>
 			<Icon backgroundColor={theme.red10.val} borderRadius={9999}>

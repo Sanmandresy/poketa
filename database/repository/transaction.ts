@@ -1,4 +1,4 @@
-import { between, eq, ilike } from "drizzle-orm";
+import { between, eq, sql } from "drizzle-orm";
 import { database } from "../init";
 import { transaction } from "../schema";
 import {
@@ -39,23 +39,25 @@ export const transactionRepository: Repository<Transaction, TransactionFilter> =
 			);
 			const query = database.select().from(transaction);
 
-			if (filter?.title !== undefined) {
-				query.where(ilike(transaction.title, `%${filter.title}%`));
+			if (filter.title !== undefined && filter.title !== "") {
+				query.where(
+					sql`LOWER(${transaction.title}) LIKE LOWER(${`%${filter.title}%`})`
+				);
 			}
 
-			if (filter?.type !== undefined) {
+			if (filter.type !== undefined) {
 				query.where(eq(transaction.type, filter.type));
 			}
 
 			// @ts-ignore
-			if (filter?.amounts !== undefined || filter?.amounts?.length === 2) {
+			if (filter.amounts !== undefined || filter.amounts?.length === 2) {
 				query.where(
-					between(transaction.amount, filter?.amounts[0], filter.amounts[1])
+					between(transaction.amount, filter.amounts[0], filter.amounts[1])
 				);
 			}
 
 			// @ts-ignore
-			if (filter?.dateRange !== undefined || filter?.dateRange?.length === 2) {
+			if (filter.dateRange !== undefined || filter.dateRange?.length === 2) {
 				query.where(
 					between(
 						transaction.issued_on,
@@ -77,7 +79,6 @@ export const transactionRepository: Repository<Transaction, TransactionFilter> =
 
 			const actualPage = await query.offset(offset).limit(actualPageSize);
 			const nextPage = await query.offset(nextOffset).limit(1);
-
 			return {
 				data: actualPage.map((row) =>
 					objectMapper(row, {} as Transaction, undefined, () => ({
