@@ -12,7 +12,7 @@ import {
 	YStack,
 } from "tamagui";
 import { TransactionType, type Transaction } from "types";
-import { isBlank, randomUuid } from "../../../util";
+import { isBlank } from "../../../util";
 import { useObject, useSubmit } from "hooks";
 import RNPickerSelect from "react-native-picker-select";
 import { toTransactions, transactionTypes } from "../../../constants";

@@ -115,3 +115,7 @@ export const formatNumber = (num: number): string => {
 	// Add parentheses for negative numbers
 	return sign === -1 ? `(${formattedAbsNum})` : formattedAbsNum;
 };
+
+export const getCurrentDate = () => {
+	return new Date().toLocaleString();
+};
