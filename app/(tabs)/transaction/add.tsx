@@ -12,7 +12,7 @@ import {
 	YStack,
 } from "tamagui";
 import { TransactionType, type Transaction } from "types";
-import { isBlank } from "../../../util";
+import { getCurrentDate, isBlank } from "../../../util";
 import { useObject, useSubmit } from "hooks";
 import RNPickerSelect from "react-native-picker-select";
 import { toTransactions, transactionTypes } from "../../../constants";
@@ -28,6 +28,8 @@ export default function AddTransaction() {
 		description: "",
 		title: "",
 		type: TransactionType.EXPENSE,
+		issued_on: getCurrentDate(),
+		updated_on: getCurrentDate(),
 	});
 	const { updateObjectProperty } = useObject<Transaction>(setTransaction);
 	const { submit, isSuccess, invalidate } = useSubmit<Transaction[]>(
