@@ -20,7 +20,8 @@
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
-			}
+			},
+			"package": "mg.poketa.app"
 		},
 		"web": {
 			"bundler": "metro",
@@ -45,6 +46,12 @@
 		],
 		"experiments": {
 			"typedRoutes": true
-		}
+		},
+		"extra": {
+			"eas": {
+				"projectId": "978c7926-92ae-4e8f-95c6-67a46d68c152"
+			}
+		},
+		"owner": "mandresy"
 	}
 }

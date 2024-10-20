@@ -1,0 +1,28 @@
+{
+	"cli": {
+		"version": ">= 12.5.4",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"development": {
+			"developmentClient": true,
+			"distribution": "internal"
+		},
+		"preview": {
+			"distribution": "internal",
+			"env": {
+				"EXPO_PUBLIC_DATABASE_URL": "poketa.db"
+			},
+			"android": {
+				"buildType": "apk",
+				"gradleCommand": ":app:assembleRelease"
+			}
+		},
+		"production": {
+			"autoIncrement": true
+		}
+	},
+	"submit": {
+		"production": {}
+	}
+}
