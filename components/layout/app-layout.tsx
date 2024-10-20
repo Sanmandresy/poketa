@@ -10,6 +10,7 @@ type AppLayoutProps = PropsWithChildren &
 const SafeArea = styled(SafeAreaView, {
 	height: "100%",
 	display: "flex",
+	flex: 1,
 });
 
 export const AppLayout = ({

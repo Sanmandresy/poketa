@@ -4,9 +4,23 @@ import { transactionRepository } from "database";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFetch, useObject, useSubmit } from "hooks";
 import { useCallback, useEffect, useState } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import {
+	Alert,
+	TouchableOpacity,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import { H4, H5, Input, ScrollView, TextArea, useTheme, YStack } from "tamagui";
+import {
+	H4,
+	H5,
+	Input,
+	ScrollView,
+	TextArea,
+	useTheme,
+	View,
+	YStack,
+} from "tamagui";
 import type { Transaction, TransactionType } from "types";
 import { getCurrentDate, isBlank } from "../../../../util";
 import { transactionTypes } from "../../../../constants";
@@ -71,70 +85,77 @@ export default function TransactionEdit() {
 					<Check color={theme.color.val} />
 				</TouchableOpacity>
 			</Header>
-			<ScrollView
-				display="flex"
-				flexDirection="column"
-				h="100%"
-				px="$3"
-				py="$5"
+			<KeyboardAvoidingView
+				behavior={Platform.OS === "ios" ? "padding" : "height"}
 			>
-				<YStack gap="$1" my="$2">
-					<H4 textTransform="capitalize" fontSize="$6">
-						Titre
-					</H4>
-					<Input
-						value={transaction?.title}
-						onChangeText={(value) => updateObjectProperty("title", value)}
-					/>
-				</YStack>
-				<YStack gap="$1" my="$3">
-					<H4 textTransform="capitalize" fontSize="$6">
-						Montant
-					</H4>
-					<Input
-						keyboardType="numeric"
-						value={`${transaction.amount}`}
-						onChangeText={(value) => updateObjectProperty("amount", +value)}
-					/>
-				</YStack>
-				<YStack gap="$1" my="$3">
-					<H4 textTransform="capitalize" fontSize="$6">
-						Type
-					</H4>
-					<RNPickerSelect
-						onValueChange={(value: TransactionType) =>
-							updateObjectProperty("type", value)
-						}
-						items={transactionTypes}
-						value={transaction.type}
-						style={{
-							viewContainer: {
-								paddingVertical: 10,
-								shadowOffset: { width: 2, height: 1 },
-								paddingHorizontal: 3,
-							},
-						}}
-						doneText="Choisir"
-						placeholder={{
-							label: transaction.type,
-							value: transaction.type,
-							inputLabel: "Sélectionnez un type",
-							color: theme.color.val,
-						}}
-					/>
-				</YStack>
-				<YStack gap="$1" my="$3">
-					<H4 textTransform="capitalize" fontSize="$6">
-						Description
-					</H4>
-					<TextArea
-						numberOfLines={10}
-						size="$5"
-						value={transaction.description}
-						onChangeText={(value) => updateObjectProperty("description", value)}
-					/>
-				</YStack>
-			</ScrollView>
+				<ScrollView
+					display="flex"
+					flexDirection="column"
+					h="100%"
+					px="$3"
+					py="$5"
+				>
+					<YStack gap="$1" my="$2">
+						<H4 textTransform="capitalize" fontSize="$6">
+							Titre
+						</H4>
+						<Input
+							value={transaction?.title}
+							onChangeText={(value) => updateObjectProperty("title", value)}
+						/>
+					</YStack>
+					<YStack gap="$1" my="$3">
+						<H4 textTransform="capitalize" fontSize="$6">
+							Montant
+						</H4>
+						<Input
+							keyboardType="numeric"
+							value={`${transaction.amount}`}
+							onChangeText={(value) => updateObjectProperty("amount", +value)}
+						/>
+					</YStack>
+					<YStack gap="$1" my="$3">
+						<H4 textTransform="capitalize" fontSize="$6">
+							Type
+						</H4>
+						<RNPickerSelect
+							onValueChange={(value: TransactionType) =>
+								updateObjectProperty("type", value)
+							}
+							items={transactionTypes}
+							value={transaction.type}
+							style={{
+								viewContainer: {
+									paddingVertical: 10,
+									shadowOffset: { width: 2, height: 1 },
+									paddingHorizontal: 3,
+								},
+							}}
+							doneText="Choisir"
+							placeholder={{
+								label: transaction.type,
+								value: transaction.type,
+								inputLabel: "Sélectionnez un type",
+								color: theme.color.val,
+							}}
+						/>
+					</YStack>
+					<YStack gap="$1" my="$3">
+						<H4 textTransform="capitalize" fontSize="$6">
+							Description
+						</H4>
+						<TextArea
+							numberOfLines={10}
+							size="$5"
+							value={transaction.description}
+							onChangeText={(value) =>
+								updateObjectProperty("description", value)
+							}
+						/>
+					</YStack>
+				</ScrollView>
+				<View height="$5" />
+			</KeyboardAvoidingView>
 		</AppLayout>
 	);
 }
