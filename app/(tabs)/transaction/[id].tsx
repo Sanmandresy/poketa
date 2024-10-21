@@ -1,4 +1,4 @@
-import { AppLayout, Header, LinkButton } from "components";
+import { AppLayout, Header, LinkButton, LoadingScreen } from "components";
 import { toEditTransaction } from "../../../constants";
 import { transactionRepository } from "database";
 import { useLocalSearchParams } from "expo-router";
@@ -11,12 +11,13 @@ import { formatNumber } from "../../../util";
 export default function TransactionShow() {
 	const { id } = useLocalSearchParams();
 	const theme = useTheme();
-	const { data } = useFetch<Transaction>(
+	const { data, isLoading } = useFetch<Transaction>(
 		// @ts-ignore
 		["transaction", id],
 		// @ts-ignore
 		async () => await transactionRepository.findOne?.(id)
 	);
+	if (isLoading) return <LoadingScreen />;
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">

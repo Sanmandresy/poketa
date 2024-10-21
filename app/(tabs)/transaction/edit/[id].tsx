@@ -1,5 +1,5 @@
 import { Check } from "@tamagui/lucide-icons";
-import { AppLayout, Header } from "components";
+import { AppLayout, Header, LoadingScreen } from "components";
 import { transactionRepository } from "database";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFetch, useObject, useSubmit } from "hooks";
@@ -31,7 +31,7 @@ export default function TransactionEdit() {
 	const router = useRouter();
 	// @ts-ignore
 	const [transaction, setTransaction] = useState<Transaction>({});
-	const { data, invalidate, refetch } = useFetch<Transaction>(
+	const { data, invalidate, refetch, isLoading } = useFetch<Transaction>(
 		// @ts-ignore
 		["transaction", id],
 		// @ts-ignore
@@ -75,6 +75,7 @@ export default function TransactionEdit() {
 		}
 	}, [isSuccess, router, transaction]);
 
+	if (isLoading) return <LoadingScreen />;
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">

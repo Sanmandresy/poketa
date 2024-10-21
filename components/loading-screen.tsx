@@ -1,17 +1,12 @@
-import { Text } from "tamagui";
+import { Spinner, YStack } from "tamagui";
 import { AppLayout } from "./layout";
 
 export const LoadingScreen = () => {
 	return (
-		<AppLayout
-			display="flex"
-			contentContainerStyle={{
-				alignItems: "center",
-				justifyContent: "center",
-				height: "100%",
-			}}
-		>
-			<Text>Chargement</Text>
+		<AppLayout>
+			<YStack h="100%" ai="center" jc="center">
+				<Spinner size="large" color="$red10" />
+			</YStack>
 		</AppLayout>
 	);
 };

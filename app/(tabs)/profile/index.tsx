@@ -1,5 +1,11 @@
 import { Edit3 } from "@tamagui/lucide-icons";
-import { AppLayout, Header, ImagePreview, LinkButton } from "components";
+import {
+	AppLayout,
+	Header,
+	ImagePreview,
+	LinkButton,
+	LoadingScreen,
+} from "components";
 import { currentUserId, toProfileEdit } from "../../../constants";
 import { H5, useTheme } from "tamagui";
 import { useCache, useFetch } from "hooks";
@@ -9,11 +15,12 @@ import { userRepository } from "database";
 export default function Profile() {
 	const theme = useTheme();
 	const { getCached } = useCache();
-	const { data } = useFetch<User>(
+	const { data, isLoading } = useFetch<User>(
 		// @ts-ignore
 		["profile", getCached(currentUserId)],
 		async () => await userRepository.findOne?.(getCached(currentUserId))
 	);
+	if (isLoading) return <LoadingScreen />;
 	return (
 		<AppLayout>
 			<Header paddingHorizontal="$3" jc="space-between">

@@ -1,5 +1,5 @@
 import { Camera, Check, GalleryHorizontal } from "@tamagui/lucide-icons";
-import { AppLayout, Header, ImagePreview } from "components";
+import { AppLayout, Header, ImagePreview, LoadingScreen } from "components";
 import { currentUserId, toProfile } from "../../../constants";
 import { useCache, useDevice, useFetch, useObject, useSubmit } from "hooks";
 import { useCallback, useEffect, useState } from "react";
@@ -27,7 +27,7 @@ export default function ProfileEdit() {
 		avatar: "",
 	});
 
-	const { data, refetch, invalidate } = useFetch<User>(
+	const { data, refetch, invalidate, isLoading } = useFetch<User>(
 		// @ts-ignore
 		["profile", getCached(currentUserId)],
 		async () => await userRepository.findOne?.(getCached(currentUserId))
@@ -80,6 +80,8 @@ export default function ProfileEdit() {
 		},
 		[takePicture, pickImage, updateObjectProperty]
 	);
+
+	if (isLoading) return <LoadingScreen />;
 
 	return (
 		<AppLayout scrollable={true}>
