@@ -86,6 +86,10 @@ export default function TransactionEdit() {
 				</TouchableOpacity>
 			</Header>
 			<KeyboardAvoidingView
+				style={{
+					paddingBottom: 50,
+					height: "100%",
+				}}
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
 			>
 				<ScrollView
@@ -93,7 +97,7 @@ export default function TransactionEdit() {
 					flexDirection="column"
 					h="100%"
 					px="$3"
-					py="$5"
+					py="$1"
 				>
 					<YStack gap="$1" my="$2">
 						<H4 textTransform="capitalize" fontSize="$6">
@@ -145,8 +149,7 @@ export default function TransactionEdit() {
 							Description
 						</H4>
 						<TextArea
-							numberOfLines={10}
-							size="$5"
+							numberOfLines={2}
 							value={transaction.description}
 							onChangeText={(value) =>
 								updateObjectProperty("description", value)

@@ -36,7 +36,7 @@ export default function TransactionShow() {
 				flexDirection="column"
 				h="100%"
 				px="$3"
-				py="$5"
+				py="$1"
 			>
 				<YStack gap="$1" my="$2">
 					<H4 textTransform="capitalize" fontSize="$6">
@@ -44,13 +44,13 @@ export default function TransactionShow() {
 					</H4>
 					<Paragraph size="$5">{data?.title}</Paragraph>
 				</YStack>
-				<YStack gap="$1" my="$3">
+				<YStack gap="$1" my="$2">
 					<H4 textTransform="capitalize" fontSize="$6">
 						Montant
 					</H4>
 					<Paragraph size="$5">{formatNumber(data?.amount)} Ariary</Paragraph>
 				</YStack>
-				<YStack gap="$1" my="$3">
+				<YStack gap="$1" my="$2">
 					<H4 textTransform="capitalize" fontSize="$6">
 						Type
 					</H4>
@@ -62,21 +62,22 @@ export default function TransactionShow() {
 					</H4>
 					<Paragraph
 						numberOfLines={10}
-						h={"fit-content"}
+						h={75}
 						py="$1"
 						size="$5"
+						textOverflow="ellipsis"
 						my="$1"
 					>
 						{data?.description}
 					</Paragraph>
 				</YStack>
-				<YStack gap="$1" my="$3">
+				<YStack gap="$1" my="$2">
 					<H4 textTransform="none" fontSize="$6">
 						Émise le
 					</H4>
 					<Paragraph size="$5">{data?.issued_on}</Paragraph>
 				</YStack>
-				<YStack gap="$1" my="$3">
+				<YStack gap="$1" my="$2">
 					<H4 textTransform="none" fontSize="$6">
 						Mise à jour le
 					</H4>

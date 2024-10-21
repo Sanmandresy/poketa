@@ -78,6 +78,10 @@ export default function AddTransaction() {
 				</TouchableOpacity>
 			</Header>
 			<KeyboardAvoidingView
+				style={{
+					paddingBottom: 50,
+					height: "100%",
+				}}
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
 			>
 				<ScrollView h="100%" px="$3">
@@ -131,8 +135,7 @@ export default function AddTransaction() {
 							Description
 						</SizableText>
 						<TextArea
-							numberOfLines={10}
-							size="$5"
+							numberOfLines={2}
 							value={transaction.description}
 							onChangeText={(value) =>
 								updateObjectProperty("description", value)

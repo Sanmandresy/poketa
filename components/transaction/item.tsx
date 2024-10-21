@@ -114,7 +114,7 @@ export const TransactionItem = ({
 			}}
 			gap="$3"
 			py="$1"
-			animation="tooltip"
+			animation="bouncy"
 			enterStyle={{
 				opacity: 0,
 				scale: 0.5,

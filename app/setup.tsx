@@ -39,8 +39,7 @@ export default function Setup() {
 			if (isSuccess) {
 				router.navigate(toProfile);
 			}
-		}
-		Alert.alert("Veuillez saisir un pseudo valide");
+		} else Alert.alert("Veuillez saisir un pseudo valide");
 	}, [isSuccess, router.navigate, submit, user]);
 
 	return (
@@ -49,7 +48,7 @@ export default function Setup() {
 				flex={1}
 				alignItems="center"
 				justifyContent="center"
-				gap="$10"
+				gap="$8"
 				enterStyle={{
 					opacity: 0,
 					scale: 0,
@@ -57,13 +56,13 @@ export default function Setup() {
 				animation={"bouncy"}
 			>
 				<XStack gap="$2" ai="center">
-					<SizableText size="$9">Bienvenue sur</SizableText>
-					<SizableText color={"$red10"} fontWeight={"bold"} size="$9">
+					<SizableText size="$8">Bienvenue sur</SizableText>
+					<SizableText color={"$red10"} fontWeight={"bold"} size="$8">
 						Poketa
 					</SizableText>
 				</XStack>
 				<YStack gap="$5">
-					<Paragraph size={"$5"}>
+					<Paragraph size={"$4"}>
 						Pour commencer, veuillez saisir votre pseudo
 					</Paragraph>
 					<Input
@@ -73,7 +72,7 @@ export default function Setup() {
 				</YStack>
 				<Button
 					onPress={handleSubmit}
-					fontSize={"$5"}
+					fontSize={"$4"}
 					backgroundColor={"$red10"}
 					color="white"
 				>

@@ -8,7 +8,12 @@ import type { User } from "types";
 import { userRepository } from "database";
 import { isBlank, isEmail } from "../../../util";
 import { useRouter } from "expo-router";
-import { Alert, TouchableOpacity } from "react-native";
+import {
+	Alert,
+	KeyboardAvoidingView,
+	Platform,
+	TouchableOpacity,
+} from "react-native";
 
 export default function ProfileEdit() {
 	const theme = useTheme();
@@ -77,7 +82,7 @@ export default function ProfileEdit() {
 	);
 
 	return (
-		<AppLayout>
+		<AppLayout scrollable={true}>
 			<Header paddingHorizontal="$3" jc="space-between">
 				<H5 color={theme.color.val} size={"$8"}>
 					Profil
@@ -106,10 +111,17 @@ export default function ProfileEdit() {
 				<H6 size={"$6"} textTransform="capitalize">
 					Pseudo
 				</H6>
-				<Input
-					value={profile.username}
-					onChangeText={(value) => updateObjectProperty("username", value)}
-				/>
+				<KeyboardAvoidingView
+					style={{
+						paddingBottom: 20,
+					}}
+					behavior={Platform.OS === "ios" ? "padding" : "height"}
+				>
+					<Input
+						value={profile.username}
+						onChangeText={(value) => updateObjectProperty("username", value)}
+					/>
+				</KeyboardAvoidingView>
 			</YStack>
 		</AppLayout>
 	);

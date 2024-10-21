@@ -79,7 +79,15 @@ function RootLayoutNav() {
 							headerShown: false,
 						}}
 					/>
-
+					<Stack.Screen
+						name="index"
+						options={{
+							headerShown: false,
+							contentStyle: {
+								backgroundColor: theme.background.val,
+							},
+						}}
+					/>
 					<Stack.Screen
 						name="setup"
 						options={{
